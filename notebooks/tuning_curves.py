@@ -18,6 +18,7 @@ y_diff = np.diff(cursor_bin[1, :])
 
 # Movement angle relative to positive x-axis
 angle = np.arctan2(y_diff, x_diff)
+np.save('data/actual_movement_angle.npy', angle)
 
 # Neuron firing rate modeled as a cosine function
 def firing_rate(theta, b , g, phi): 
@@ -61,3 +62,4 @@ for idx, i in enumerate(best_neurons):
 
 plt.tight_layout() 
 plt.show()
+
