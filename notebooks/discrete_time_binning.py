@@ -1,24 +1,31 @@
-import numpy as np
-import matplotlib.pyplot as plt
+import os
+
 import h5py
+import numpy as np
 
-raw_data = h5py.File(r'C:\Users\ruben\Desktop\Neuro\Neural-Decoder\data\indy_20160627_01.mat', 'r')
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+raw_data = h5py.File(os.path.join(BASE, "data", "indy_20160627_01.mat"), "r")
 
-spike_times = []
-for i in range(96):
-    ref = raw_data['spikes'][0, i]
-    times = raw_data[ref][:].flatten()
-    spike_times.append(times)
+t = raw_data["t"][0]  # (840737,) timestamps at 250Hz
+cursor_pos = raw_data["cursor_pos"][:]  # (2, 840737)
 
-# binning into discrete time bins of 50ms width
+# Spike binning — 50ms bins
+bin_edges = np.arange(t[0], t[-1], 0.05)
+
 binned_spikes_raw = []
-for j in range(96) : 
-    spikes_binned = np.histogram(spike_times[j] , np.arange(raw_data["t"][0, 0], raw_data["t"][0, -1], 0.05))
-    binned_spikes_raw.append(spikes_binned[0])
-binned_spikes = np.array(binned_spikes_raw).transpose()
-np.save(r'C:\Users\ruben\Desktop\Neuro\Neural-Decoder\data\spikes_bins_50ms.npy' , binned_spikes)
+for i in range(96):
+    ref = raw_data["spikes"][0, i]
+    spike_times = raw_data[ref][:].flatten()
+    counts, _ = np.histogram(spike_times, bin_edges)
+    binned_spikes_raw.append(counts)
+binned_spikes = np.array(binned_spikes_raw).transpose()  # (n_bins, 96)
+np.save(os.path.join(BASE, "data", "spikes_bins_50ms.npy"), binned_spikes)
 
-# Resampling cursor_pos to roughly match spikes
-cursor_binned_full = raw_data['cursor_pos'][:, ::12]
-cursor_binned = cursor_binned_full[0:2 , 0: 67258]
-np.save(r'C:\Users\ruben\Desktop\Neuro\Neural-Decoder\data\cursor_bins.npy', cursor_binned )
+# Cursor — resampled onto the SAME 50ms grid via interpolation
+bin_centers = bin_edges[:-1] + 0.025  # one time point per bin
+cursor_x = np.interp(bin_centers, t, cursor_pos[0])
+cursor_y = np.interp(bin_centers, t, cursor_pos[1])
+cursor_binned = np.array([cursor_x, cursor_y])  # (2, n_bins)
+np.save(os.path.join(BASE, "data", "cursor_bins.npy"), cursor_binned)
+
+print("spikes:", binned_spikes.shape, "cursor:", cursor_binned.shape)
