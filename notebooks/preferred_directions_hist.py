@@ -1,9 +1,11 @@
 import numpy as np
-import scipy 
+import scipy
 import matplotlib.pyplot as plt
+from pathlib import Path
 
-cursor_bin = np.load('data/cursor_bins.npy')
-spikes_bin = np.load(r'data/spikes_bins_50ms.npy')
+data_dir = Path(__file__).parent.parent / "data"
+cursor_bin = np.load(data_dir / 'cursor_bins.npy')
+spikes_bin = np.load(data_dir / 'spikes_bins_50ms.npy')
 
 # Rate of change of x and y position
 x_diff = np.diff(cursor_bin[0, : ])
@@ -34,5 +36,5 @@ Y = phi_list
 plt.hist(Y)
 plt.show()
 
-np.save('data/phi_list.npy', phi_list)
+np.save(data_dir / 'phi_list.npy', phi_list)
 

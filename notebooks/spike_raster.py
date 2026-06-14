@@ -1,8 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import h5py
+from pathlib import Path
 
-raw_data = h5py.File(r'C:\Users\ruben\Desktop\Neuro\Neural-Decoder\data\indy_20160627_01.mat', 'r')
+data_dir = Path(__file__).parent.parent / "data"
+raw_data = h5py.File(data_dir / 'indy_20160627_01.mat', 'r')
 
 spike_times = []
 for i in range(96):

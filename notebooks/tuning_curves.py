@@ -8,9 +8,11 @@ Neural decoding mini-project:
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy
+from pathlib import Path
 
-cursor_bin = np.load('data/cursor_bins.npy')
-spikes_bin = np.load(r'data/spikes_bins_50ms.npy')
+data_dir = Path(__file__).parent.parent / "data"
+cursor_bin = np.load(data_dir / 'cursor_bins.npy')
+spikes_bin = np.load(data_dir / 'spikes_bins_50ms.npy')
 
 # Rate of change of x and y position
 x_diff = np.diff(cursor_bin[0, : ])
@@ -18,7 +20,7 @@ y_diff = np.diff(cursor_bin[1, :])
 
 # Movement angle relative to positive x-axis
 angle = np.arctan2(y_diff, x_diff)
-np.save('data/actual_movement_angle.npy', angle)
+np.save(data_dir / 'actual_movement_angle.npy', angle)
 
 # Neuron firing rate modeled as a cosine function
 def firing_rate(theta, b , g, phi): 
