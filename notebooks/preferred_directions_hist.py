@@ -8,19 +8,19 @@ cursor_bin = np.load(data_dir / 'cursor_bins.npy')
 spikes_bin = np.load(data_dir / 'spikes_bins_50ms.npy')
 
 # Rate of change of x and y position
-x_diff = np.diff(cursor_bin[0, : ])
+x_diff = np.diff(cursor_bin[0, :])
 y_diff = np.diff(cursor_bin[1, :])
 
 # Movement angle relative to positive x-axis
 angle = np.arctan2(y_diff, x_diff)
 
+
 # Neuron firing rate modeled as a cosine function
-def firing_rate(theta, b , g, phi): 
-    cos_model = b + g*np.cos(theta - phi)
+def firing_rate(theta, b, g, phi):
+    cos_model = b + g * np.cos(theta - phi)
     return cos_model
 
-tuning_list = []
-neuron_list = []
+
 phi_list = []
 for i in range(96):
     angle_bin = scipy.stats.binned_statistic(angle, spikes_bin[:-1, i], statistic='mean', bins=8)

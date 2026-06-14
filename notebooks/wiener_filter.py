@@ -1,14 +1,14 @@
-import os
 import time
+from pathlib import Path
 
 import numpy as np
 from r2 import r2
 from ridge_scratch import ridge
 from sklearn.linear_model import Ridge
 
-BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-spikes = np.load(os.path.join(BASE, "data", "spikes_bins_50ms.npy"))
-cursor = np.load(os.path.join(BASE, "data", "cursor_bins.npy"))
+data_dir = Path(__file__).parent.parent / "data"
+spikes = np.load(data_dir / "spikes_bins_50ms.npy")
+cursor = np.load(data_dir / "cursor_bins.npy")
 
 K = 10
 
