@@ -19,9 +19,9 @@ Session indy_20160627_01.mat: spike times for 96 sorted units and continuous cur
 Stored as MATLAB v7.3 / HDF5, loaded with h5py.
 
 ## Methods & Status
-Tuning curves + Population vector : Complete
-Wiener filter (Ridge Regression) : Complete
-Kalman filter (State-space) : In progress
+Tuning curves + Population vector : Complete\
+Wiener filter (Ridge Regression) : Complete\
+Kalman filter (State-space) : In progress\
 GRU decoder (PyTorch) : Planned
 
 ## Phase 1 : Population Vector
