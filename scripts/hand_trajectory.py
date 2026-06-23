@@ -1,7 +1,8 @@
+from pathlib import Path
+
 import h5py
 import matplotlib.pyplot as plt
-import numpy as np
-from pathlib import Path
+from matplotlib.animation import FuncAnimation
 
 data_dir = Path(__file__).parent.parent / "data"
 raw_data = h5py.File(data_dir / "indy_20160627_01.mat", "r")
@@ -9,7 +10,6 @@ cursor_pos = raw_data["cursor_pos"]
 x = raw_data["cursor_pos"][0, 0:15000]
 y = raw_data["cursor_pos"][1, 0:15000]
 
-from matplotlib.animation import FuncAnimation
 
 fig, ax = plt.subplots()
 (line,) = ax.plot([], [])
